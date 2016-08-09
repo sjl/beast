@@ -164,46 +164,58 @@
               :collect (make-hash-table))))
 
 
-(defmacro define-system (name arglist &body body)
-  (flet ((system-type-signature (arglist)
-           `(function (,@(mapcar (lambda (arg)
-                                   `(and entity ,@(cdr arg)))
-                                 arglist))
-             (values null &optional))))
-    `(progn
-      (declaim (ftype ,(system-type-signature arglist) ,name))
-      (defun ,name (,@(mapcar #'car arglist))
-        ,@body
-        nil)
+(defun build-system-runner-1 (name type-specifiers)
+  (with-gensyms (argument-indexes entity)
+    `(let ((,argument-indexes (gethash ',name *system-index*)))
+      (loop :for ,entity :being :the hash-values :of (first ,argument-indexes)
+            :do (locally
+                  (declare (type ,(first type-specifiers) ,entity))
+                  (,name ,entity))))))
 
-      (initialize-system-index ',name #',name ',arglist)
+(defun build-system-runner-2 (name type-specifiers)
+  (with-gensyms (argument-indexes e1 e2)
+    `(let ((,argument-indexes (gethash ',name *system-index*)))
+      (loop
+        :for ,e1 :being :the hash-values :of (first ,argument-indexes)
+        :do (loop :for ,e2 :being :the hash-values :of (second ,argument-indexes)
+                  :do (locally
+                        (declare (type ,(first type-specifiers) ,e1)
+                                 (type ,(second type-specifiers) ,e2))
+                        (,name ,e1 ,e2)))))))
 
-      ',name)))
-
-
-(defun run-system-fast-1 (system system-function)
-  (let ((argument-indexes (gethash system *system-index*)))
-    (loop :for entity :being :the hash-values :of (first argument-indexes)
-          :do (funcall system-function entity))))
-
-(defun run-system-fast-2 (system system-function)
-  (let ((argument-indexes (gethash system *system-index*)))
-    (loop
-      :for e1 :being :the hash-values :of (first argument-indexes)
-      :do (loop :for e2 :being :the hash-values :of (second argument-indexes)
-                :do (funcall system-function e1 e2)))))
+(defun build-system-runner-n (name)
+  `(apply #'map-product #',name
+    (mapcar #'hash-table-values (gethash ',name *system-index*))))
 
 
-(defun run-system (system)
-  (destructuring-bind (system-function arity type-specifiers)
-      (gethash system *systems*)
-    (declare (ignore type-specifiers))
-    (case arity
-      ;; Special-case systems of arity 1/2 for speed
-      (0 nil)
-      (1 (run-system-fast-1 system system-function))
-      (2 (run-system-fast-2 system system-function))
-      (t (apply #'map-product system-function
-                (mapcar #'hash-table-values (gethash system *system-index*)))))
-    (values)))
+(defun build-system-runner (name arity type-specifiers)
+  (case arity
+    (0 nil)
+    (1 (build-system-runner-1 name type-specifiers))
+    (2 (build-system-runner-2 name type-specifiers))
+    (t (build-system-runner-n name))))
+
+
+(defmacro define-system (name-and-options arglist &body body)
+  (let ((argument-type-specifiers (loop :for arg :in arglist
+                                        :collect `(and entity ,@(cdr arg)))))
+    (destructuring-bind (name &key inline)
+        (ensure-list name-and-options)
+      `(progn
+        (declaim (ftype (function (,@argument-type-specifiers)
+                                  (values null &optional))
+                        ,name)
+                 ,(if inline
+                    `(inline ,name)
+                    `(notinline ,name)))
+        (defun ,name (,@(mapcar #'car arglist))
+          ,@body
+          nil)
+
+        (defun ,(symb 'run- name) ()
+          ,(build-system-runner name (length arglist) argument-type-specifiers))
+
+        (initialize-system-index ',name #',name ',arglist)
+
+        ',name))))
 
