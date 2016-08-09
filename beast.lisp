@@ -16,7 +16,7 @@
 ;;;
 ;;; Systems are stored as:
 ;;;
-;;;     {system-symbol -> (cons system-function type-specifier-list)}
+;;;     {system-symbol -> (system-function arity type-specifier-list)}
 ;;;
 ;;; TODO: Figure out the distinct problem.
 ;;; TODO: Unfuck redefining of systems.
@@ -64,7 +64,7 @@
     (loop
       :with id = (entity-id entity)
       :for system :being :the hash-keys :of *systems*
-      :using (hash-value (function . type-specifiers))
+      :using (hash-value (function arity type-specifiers))
       :do (loop :for argument-index :in (gethash system *system-index*)
                 :for specifier :in type-specifiers
                 :when (satisfies-system-type-specifier-p entity specifier)
@@ -157,7 +157,7 @@
 
 (defun initialize-system-index (name function arglist)
   (setf (gethash name *systems*)
-        (cons function (mapcar #'cdr arglist))
+        (list function (length arglist) (mapcar #'cdr arglist))
 
         (gethash name *system-index*)
         (loop :repeat (length arglist)
@@ -181,11 +181,29 @@
       ',name)))
 
 
+(defun run-system-fast-1 (system system-function)
+  (let ((argument-indexes (gethash system *system-index*)))
+    (loop :for entity :being :the hash-values :of (first argument-indexes)
+          :do (funcall system-function entity))))
+
+(defun run-system-fast-2 (system system-function)
+  (let ((argument-indexes (gethash system *system-index*)))
+    (loop
+      :for e1 :being :the hash-values :of (first argument-indexes)
+      :do (loop :for e2 :being :the hash-values :of (second argument-indexes)
+                :do (funcall system-function e1 e2)))))
+
+
 (defun run-system (system)
-  (destructuring-bind (system-function . type-specifiers)
+  (destructuring-bind (system-function arity type-specifiers)
       (gethash system *systems*)
     (declare (ignore type-specifiers))
-    ;; TODO: make this iteration less awful
-    (apply #'map-product system-function
-           (mapcar #'hash-table-values (gethash system *system-index*)))
+    (case arity
+      ;; Special-case systems of arity 1/2 for speed
+      (0 nil)
+      (1 (run-system-fast-1 system system-function))
+      (2 (run-system-fast-2 system system-function))
+      (t (apply #'map-product system-function
+                (mapcar #'hash-table-values (gethash system *system-index*)))))
     (values)))
+
