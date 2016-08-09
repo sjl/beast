@@ -6,14 +6,16 @@
     #:entity
     #:entity-id
 
+    #:define-entity
+
+    #:create-entity
+    #:destroy-entity
     #:get-entity
     #:map-entities
     #:clear-entities
 
     #:entity-created
     #:entity-destroyed
-
-    #:define-entity
 
     #:define-aspect
 

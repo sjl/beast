@@ -71,33 +71,43 @@
                 :do (setf (gethash id argument-index) entity)))))
 
 
-(defmethod initialize-instance :after ((e entity) &key)
-  (index-entity e)
-  (index-entity-aspects e)
-  (index-entity-systems e))
+(defun unindex-entity (id)
+  (remhash id *entity-index*))
+
+(defun unindex-entity-aspects (id)
+  (loop
+    :for index :being :the hash-values :of *aspect-index*
+    :do (remhash id index)))
+
+(defun unindex-entity-systems (id)
+  (loop
+    :for argument-indexes :being :the hash-values :of *system-index*
+    :do (loop :for index :in argument-indexes
+              :do (remhash id index))))
 
 
 (defgeneric entity-created (entity)
-  (:method ((entity entity)) entity))
+  (:method ((entity entity)) nil))
 
 (defgeneric entity-destroyed (entity)
-  (:method ((entity entity)) entity))
+  (:method ((entity entity)) nil))
 
 
 (defun create-entity (class &rest initargs)
-  (entity-created (apply #'make-instance class initargs)))
+  (let ((entity (apply #'make-instance class initargs)))
+    (index-entity entity)
+    (index-entity-aspects entity)
+    (index-entity-systems entity)
+    (entity-created entity)
+    entity))
 
 (defun destroy-entity (entity)
   (let ((id (entity-id entity)))
-    (remhash id *entity-index*)
-    (loop
-      :for index :being :the hash-values :of *aspect-index*
-      :do (remhash id index))
-    (loop
-      :for argument-indexes :being :the hash-values :of *system-index*
-      :do (loop :for index :in argument-indexes
-                :do (remhash id index))))
-  (entity-destroyed entity))
+    (unindex-entity id)
+    (unindex-entity-aspects id)
+    (unindex-entity-systems id))
+  (entity-destroyed entity)
+  entity)
 
 
 (defmacro define-entity (name aspects &rest slots)
@@ -116,7 +126,6 @@
 (defun initialize-aspect-index (name)
   (when (not (hash-table-key-exists-p *aspect-index* name))
     (setf (gethash name *aspect-index*) (make-hash-table))))
-
 
 (defmacro define-aspect (name &rest fields)
   (flet ((clean-field (f)
@@ -155,22 +164,21 @@
               :collect (make-hash-table))))
 
 
-(defun system-type-signature (arglist)
-  `(function (,@(mapcar (lambda (arg)
-                          `(and entity ,@(cdr arg)))
-                        arglist))
-             (values null &optional)))
-
 (defmacro define-system (name arglist &body body)
-  `(progn
-    (declaim (ftype ,(system-type-signature arglist) ,name))
-    (defun ,name (,@(mapcar #'car arglist))
-      ,@body
-      nil)
+  (flet ((system-type-signature (arglist)
+           `(function (,@(mapcar (lambda (arg)
+                                   `(and entity ,@(cdr arg)))
+                                 arglist))
+             (values null &optional))))
+    `(progn
+      (declaim (ftype ,(system-type-signature arglist) ,name))
+      (defun ,name (,@(mapcar #'car arglist))
+        ,@body
+        nil)
 
-    (initialize-system-index ',name #',name ',arglist)
+      (initialize-system-index ',name #',name ',arglist)
 
-    ',name))
+      ',name)))
 
 
 (defun run-system (system)
