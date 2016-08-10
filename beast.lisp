@@ -19,7 +19,6 @@
 ;;;     {system-symbol -> (system-function arity type-specifier-list)}
 ;;;
 ;;; TODO: Figure out the distinct problem.
-;;; TODO: Unfuck redefining of systems.
 
 
 ;;;; Entities
@@ -48,6 +47,10 @@
   (mapc #'destroy-entity (hash-table-values *entity-index*)))
 
 
+(defun entity-satisfies-system-type-specifier-p (entity specifier)
+  (every (lambda (aspect) (typep entity aspect))
+         specifier))
+
 (defun index-entity (entity)
   (setf (gethash (entity-id entity) *entity-index*) entity))
 
@@ -58,17 +61,14 @@
                   entity)))
 
 (defun index-entity-systems (entity)
-  (flet ((satisfies-system-type-specifier-p (entity specifier)
-           (every (lambda (aspect) (typep entity aspect))
-                  specifier)))
-    (loop
-      :with id = (entity-id entity)
-      :for system :being :the hash-keys :of *systems*
-      :using (hash-value (function arity type-specifiers))
-      :do (loop :for argument-index :in (gethash system *system-index*)
-                :for specifier :in type-specifiers
-                :when (satisfies-system-type-specifier-p entity specifier)
-                :do (setf (gethash id argument-index) entity)))))
+  (loop
+    :with id = (entity-id entity)
+    :for system :being :the hash-keys :of *systems*
+    :using (hash-value (function arity type-specifiers))
+    :do (loop :for argument-index :in (gethash system *system-index*)
+              :for specifier :in type-specifiers
+              :when (entity-satisfies-system-type-specifier-p entity specifier)
+              :do (setf (gethash id argument-index) entity))))
 
 
 (defun unindex-entity (id)
@@ -155,13 +155,22 @@
 (defvar *systems* (make-hash-table))
 
 
+(defun rebuild-system-index (arglist)
+  (loop
+    :for (argument-name . type-specifier) :in arglist
+    :for index = (make-hash-table)
+    :do (loop
+          :for entity :being :the hash-values :of *entity-index*
+          :when (entity-satisfies-system-type-specifier-p entity type-specifier)
+          :do (setf (gethash (entity-id entity) index) entity))
+    :collect index))
+
 (defun initialize-system-index (name function arglist)
   (setf (gethash name *systems*)
         (list function (length arglist) (mapcar #'cdr arglist))
 
         (gethash name *system-index*)
-        (loop :repeat (length arglist)
-              :collect (make-hash-table))))
+        (rebuild-system-index arglist)))
 
 
 (defun build-system-runner-1 (name type-specifiers)
