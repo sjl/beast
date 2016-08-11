@@ -5,7 +5,7 @@ quickutils.lisp: make-quickutils.lisp
 
 sourcefiles = $(shell ffind --full-path --literal .lisp)
 docfiles = $(shell ls docs/*.markdown)
-apidoc = docs/03-reference.markdown
+apidoc = docs/04-reference.markdown
 
 $(apidoc): $(sourcefiles) docs/api.lisp package.lisp
 	sbcl --noinform --load docs/api.lisp  --eval '(quit)'

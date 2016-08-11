@@ -5,7 +5,7 @@ Here's the list of changes in each released version.
 
 [TOC]
 
-v0.0.1
+v1.0.0
 ------
 
-Initial alpha version.  Things are going to break a lot.  Don't use this.
+Initial version.  It works, but changes may happen in the future.

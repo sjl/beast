@@ -10,14 +10,13 @@
 
     #:create-entity
     #:destroy-entity
+    #:clear-entities
     #:get-entity
     #:map-entities
-    #:clear-entities
 
     #:entity-created
     #:entity-destroyed
 
     #:define-aspect
 
-    #:define-system
-    #:run-system))
+    #:define-system))

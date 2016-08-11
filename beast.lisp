@@ -209,8 +209,9 @@
 
 
 (defmacro define-system (name-and-options arglist &body body)
-  (let ((argument-type-specifiers (loop :for arg :in arglist
-                                        :collect `(and entity ,@(cdr arg)))))
+  (let ((argument-type-specifiers
+          (loop :for arg :in (mapcar #'ensure-list arglist)
+                :collect `(and entity ,@(cdr arg)))))
     (destructuring-bind (name &key inline)
         (ensure-list name-and-options)
       `(progn

@@ -16,6 +16,10 @@ don't touch it.
 
     (CLEAR-ENTITIES)
 
+### `CREATE-ENTITY` (function)
+
+    (CREATE-ENTITY CLASS &REST INITARGS)
+
 ### `DEFINE-ASPECT` (macro)
 
     (DEFINE-ASPECT NAME &REST FIELDS)
@@ -26,10 +30,14 @@ don't touch it.
 
 ### `DEFINE-SYSTEM` (macro)
 
-    (DEFINE-SYSTEM NAME
+    (DEFINE-SYSTEM NAME-AND-OPTIONS
         ARGLIST
       &BODY
       BODY)
+
+### `DESTROY-ENTITY` (function)
+
+    (DESTROY-ENTITY ENTITY)
 
 ### `ENTITY` (class)
 
@@ -59,8 +67,4 @@ don't touch it.
 ### `MAP-ENTITIES` (function)
 
     (MAP-ENTITIES FUNCTION &OPTIONAL (TYPE 'ENTITY))
-
-### `RUN-SYSTEM` (function)
-
-    (RUN-SYSTEM SYSTEM)
 
