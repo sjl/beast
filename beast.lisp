@@ -38,6 +38,9 @@
 (defun get-entity (id)
   (gethash id *entity-index*))
 
+(defun all-entities ()
+  (hash-table-values *entity-index*))
+
 (defun map-entities (function &optional (type 'entity))
   (mapcar function
           (remove-if-not (lambda (entity) (typep entity type))

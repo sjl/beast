@@ -12,4 +12,19 @@
   :serial t
   :components ((:file "quickutils")
                (:file "package")
-               (:file "beast")))
+               (:file "beast"))
+
+  :in-order-to ((asdf:test-op (asdf:test-op #:beast-test))))
+
+
+(asdf:defsystem #:beast-test
+  :name "beast-test"
+
+  :depends-on (#:1am)
+
+  :serial t
+  :components ((:file "package-test")
+               (:file "test"))
+
+  :perform (asdf:test-op (op system)
+             (uiop:symbol-call :beast-test :run-tests)))
