@@ -108,7 +108,7 @@
   "))
 
 
-(defun create-entity (entity-class &rest initargs)
+(defun create-entity (class &rest initargs)
   "Create an entity of the given entity class and return it.
 
   `initargs` will be passed along to `make-instance`.
