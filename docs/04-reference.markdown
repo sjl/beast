@@ -26,7 +26,7 @@ Destroy all entities.
 
 ### `CREATE-ENTITY` (function)
 
-    (CREATE-ENTITY ENTITY-CLASS &REST INITARGS)
+    (CREATE-ENTITY CLASS &REST INITARGS)
 
 Create an entity of the given entity class and return it.
 
