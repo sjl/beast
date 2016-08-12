@@ -60,8 +60,9 @@ use `:allocation :class` then go nuts!
 
 ### Aspect Type Predicates
 
-Beast also defines an `aspect?` predicate for each aspect, which comes in handy
-when using higher-order functions:
+When you define an aspect named `foo` Beast also defines a `foo?` predicate that
+returns `(typep object 'foo)`, which comes in handy when using higher-order
+functions:
 
     :::lisp
     (defun whats-for-dinner? ()
