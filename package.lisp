@@ -11,7 +11,6 @@
     #:create-entity
     #:destroy-entity
     #:clear-entities
-    #:get-entity
     #:map-entities
 
     #:entity-created
