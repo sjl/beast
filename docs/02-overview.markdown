@@ -57,10 +57,10 @@ Beast tries to be just a very thin layer over CLOS, because CLOS is quite
 powerful.  You can use `typep`, generic methods, before/after/around methods,
 and everything else CLOS gives you.
 
-Like every engineering decision this comes with are tradeoffs.  You can't
-(easily) add or remove aspects to/from a particular entity at runtime like you
-can with cl-ecs.  And there's no way to give an entity multiple "copies" of
-a single aspect.
+Like every engineering decision this comes with tradeoffs.  You can't (easily)
+add or remove aspects to/from a particular entity at runtime like you can with
+cl-ecs.  And there's no way to give an entity multiple "copies" of a single
+aspect.
 
 The author has found this approach to work well for his needs.  You should take
 a look at both approaches and decide which is best for you.  If you want to read
