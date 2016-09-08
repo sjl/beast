@@ -9,3 +9,6 @@ this is, or the [Usage](./usage/) for a full rundown.
 * **Documentation:** <http://sjl.bitbucket.org/beast/>
 * **Mercurial:** <http://bitbucket.org/sjl/beast/>
 * **Git:** <http://github.com/sjl/beast/>
+
+The test suite currently passes in SBCL, CCL, ECL, and ABCL on OS X and Debian.
+Further testing is welcome.
