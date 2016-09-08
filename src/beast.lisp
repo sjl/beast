@@ -1,5 +1,6 @@
 (in-package #:beast)
 
+
 ;;;; Notes
 ;;; Entities are stored in an {id -> entity} hash table.
 ;;;
@@ -21,11 +22,15 @@
 ;;; TODO: Figure out the distinct problem.
 
 
-;;;; Entities
+;;;; Global Data Structures ---------------------------------------------------
 (defvar *entity-id-counter* 0)
 (defvar *entity-index* (make-hash-table))
+(defvar *aspect-index* (make-hash-table))
+(defvar *system-index* (make-hash-table))
+(defvar *systems* (make-hash-table))
 
 
+;;;; Entities -----------------------------------------------------------------
 (defclass entity ()
   ((id
      :reader entity-id :initform (incf *entity-id-counter*)
@@ -62,7 +67,7 @@
   (loop
     :with id = (entity-id entity)
     :for system :being :the hash-keys :of *systems*
-    :using (hash-value (function arity type-specifiers))
+    :using (hash-value (nil nil type-specifiers))
     :do (loop :for argument-index :in (gethash system *system-index*)
               :for specifier :in type-specifiers
               :when (entity-satisfies-system-type-specifier-p entity specifier)
@@ -195,9 +200,7 @@
     (find-class ',name)))
 
 
-;;;; Aspects
-(defvar *aspect-index* (make-hash-table))
-
+;;;; Aspects ------------------------------------------------------------------
 (defun initialize-aspect-index (name)
   (when (not (hash-table-key-exists-p *aspect-index* name))
     (setf (gethash name *aspect-index*) (make-hash-table))))
@@ -251,14 +254,10 @@
       (find-class ',name))))
 
 
-;;;; Systems
-(defvar *system-index* (make-hash-table))
-(defvar *systems* (make-hash-table))
-
-
+;;;; Systems ------------------------------------------------------------------
 (defun rebuild-system-index (arglist)
   (loop
-    :for (argument-name . type-specifier) :in arglist
+    :for (nil . type-specifier) :in arglist
     :for index = (make-hash-table)
     :do (loop
           :for entity :being :the hash-values :of *entity-index*
