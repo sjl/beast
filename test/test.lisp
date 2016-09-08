@@ -60,8 +60,8 @@
 (define-test get-entities
   (let ((a (create-entity 'e))
         (b (create-entity 'e)))
-    (is (eq a (get-entity (entity-id a))))
-    (is (eq b (get-entity (entity-id b))))))
+    (is (eq a (beast::get-entity (entity-id a))))
+    (is (eq b (beast::get-entity (entity-id b))))))
 
 (define-test aspect-mixins
   (let ((f (create-entity 'e-foo :a-foo/f :foo))
