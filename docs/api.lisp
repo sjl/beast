@@ -4,7 +4,7 @@
   (list "BEAST"))
 
 (defparameter *output-path*
-  #p"docs/04-reference.markdown" )
+  #p"docs/03-reference.markdown" )
 
 (defparameter *header*
   "The following is a list of all user-facing parts of Beast.

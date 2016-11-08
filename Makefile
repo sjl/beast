@@ -2,7 +2,7 @@
 
 sourcefiles = $(shell ffind --full-path --literal .lisp)
 docfiles = $(shell ls docs/*.markdown)
-apidoc = docs/04-reference.markdown
+apidoc = docs/03-reference.markdown
 
 # Vendor ----------------------------------------------------------------------
 vendor/quickutils.lisp: vendor/make-quickutils.lisp

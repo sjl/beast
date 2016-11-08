@@ -140,21 +140,6 @@ Destroy `entity` and return it.
 
 A single entity in the game world.
 
-#### Slot `ID`
-
-* Allocation: `:INSTANCE`
-* Initform: `(INCF BEAST::*ENTITY-ID-COUNTER*)`
-* Reader: `ENTITY-ID`
-
-The unique ID of the entity.  This may go away in the future.
-
-#### Slot `%BEAST/ASPECTS`
-
-* Allocation: `:CLASS`
-* Initform: `NIL`
-
-A list of the aspects this entity class inherits.  **Don't touch this.**
-
 ### `ENTITY-CREATED` (generic function)
 
     (ENTITY-CREATED ENTITY)
