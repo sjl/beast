@@ -9,12 +9,14 @@ popular:
 * <http://en.wikipedia.org/wiki/Entity_component_system>
 * <http://www.gamedev.net/page/resources/_/technical/game-programming/understanding-component-entity-systems-r3013>
 
-There are a couple of ECS libraries for Common Lisp already:
+There were a couple of ECS libraries for Common Lisp already:
 
-* [cl-ecs](https://github.com/lispgames/cl-ecs)
-* [ecstasy](https://github.com/mfiano/ecstasy)
+* cl-ecs
+* ecstasy
 
-Both of these favor composition over inheritance -- game objects (entities)
+Which were both superseded by [net.axity.common-lisp.gamedev.ecs](https://github.com/mfiano/net.axity.common-lisp.gamedev/tree/master/ecs).
+
+All of these favor composition over inheritance -- game objects (entities)
 *contain* various components, but they don't *inherit* from components.
 
 Beast takes the opposite approach, favoring (restricted) inheritance over
