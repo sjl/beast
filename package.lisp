@@ -1,21 +1,21 @@
-(defpackage #:beast
+(defpackage :beast
   (:use
-    #:cl
-    #:beast.quickutils)
+    :cl
+    :beast.quickutils)
   (:export
-    #:entity
-    #:entity-id
+    :entity
+    :entity-id
 
-    #:define-entity
+    :define-entity
 
-    #:create-entity
-    #:destroy-entity
-    #:clear-entities
-    #:map-entities
+    :create-entity
+    :destroy-entity
+    :clear-entities
+    :map-entities
 
-    #:entity-created
-    #:entity-destroyed
+    :entity-created
+    :entity-destroyed
 
-    #:define-aspect
+    :define-aspect
 
-    #:define-system))
+    :define-system))

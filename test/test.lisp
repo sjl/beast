@@ -1,4 +1,4 @@
-(in-package #:beast-test)
+(in-package :beast-test)
 
 ;;;; Boilerplate
 (defmacro define-test (name &body body)

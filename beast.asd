@@ -1,5 +1,4 @@
-(asdf:defsystem #:beast
-  :name "beast"
+(asdf:defsystem :beast
   :description "Basic Entity/Aspect/System Toolkit"
 
   :author "Steve Losh <steve@stevelosh.com>"
@@ -19,19 +18,4 @@
                 :serial t
                 :components ((:file "beast"))))
 
-  :in-order-to ((asdf:test-op (asdf:test-op #:beast-test))))
-
-
-(asdf:defsystem #:beast-test
-  :name "beast-test"
-
-  :depends-on (#:1am)
-
-  :serial t
-  :components ((:file "package-test")
-               (:module "test"
-                :serial t
-                :components ((:file "test"))))
-
-  :perform
-  (asdf:test-op (op system) (uiop:symbol-call :beast-test :run-tests)))
+  :in-order-to ((asdf:test-op (asdf:test-op :beast-test))))
