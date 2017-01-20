@@ -233,7 +233,7 @@
 
   "
   (flet ((clean-field (f)
-           (etypecase f
+           (ctypecase f
              (symbol (list f))
              (list f))))
     `(progn
