@@ -22,7 +22,7 @@ To define an aspect you use `define-aspect`:
 
 `define-aspect` takes the name of the aspect and zero or more slot definitions.
 
-The names of aspect slots will be have the aspect name prepended to them with
+The names of aspect slots will have the aspect name prepended to them with
 a slash to avoid clashing between aspects, and the `initargs` and `accessors`
 will be added for you.  So for example, this:
 
