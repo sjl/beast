@@ -9,7 +9,7 @@ Beast can be installed with [Quicklisp][]:
 Check out the [Overview](./overview/) for a three-minute description of what
 this is, or the [Usage](./usage/) for a full rundown.
 
-* **License:** MIT/X11
+* **License:** MIT
 * **Documentation:** <http://sjl.bitbucket.org/beast/>
 * **Mercurial:** <http://bitbucket.org/sjl/beast/>
 * **Git:** <http://github.com/sjl/beast/>

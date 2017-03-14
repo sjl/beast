@@ -21,7 +21,7 @@ Check out the [Overview](http://sjl.bitbucket.org/beast/overview/) for
 a three-minute description of what this is, or the
 [Usage](http://sjl.bitbucket.org/beast/usage/) for a full rundown.
 
-* **License:** MIT/X11
+* **License:** MIT
 * **Documentation:** <http://sjl.bitbucket.org/beast/>
 * **Mercurial:** <http://bitbucket.org/sjl/beast/>
 * **Git:** <http://github.com/sjl/beast/>
