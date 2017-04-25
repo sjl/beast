@@ -17,12 +17,12 @@ Beast can be installed with [Quicklisp][]:
 
     (ql:quickload :beast)
 
-Check out the [Overview](http://sjl.bitbucket.io/beast/overview/) for
+Check out the [Overview](https://sjl.bitbucket.io/beast/overview/) for
 a three-minute description of what this is, or the
-[Usage](http://sjl.bitbucket.io/beast/usage/) for a full rundown.
+[Usage](https://sjl.bitbucket.io/beast/usage/) for a full rundown.
 
 * **License:** MIT
-* **Documentation:** <http://sjl.bitbucket.io/beast/>
+* **Documentation:** <https://sjl.bitbucket.io/beast/>
 * **Mercurial:** <http://bitbucket.org/sjl/beast/>
 * **Git:** <http://github.com/sjl/beast/>
 

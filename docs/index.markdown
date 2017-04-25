@@ -10,7 +10,7 @@ Check out the [Overview](./overview/) for a three-minute description of what
 this is, or the [Usage](./usage/) for a full rundown.
 
 * **License:** MIT
-* **Documentation:** <http://sjl.bitbucket.io/beast/>
+* **Documentation:** <https://sjl.bitbucket.io/beast/>
 * **Mercurial:** <http://bitbucket.org/sjl/beast/>
 * **Git:** <http://github.com/sjl/beast/>
 
