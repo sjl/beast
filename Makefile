@@ -20,10 +20,10 @@ docs/build/index.html: $(docfiles) $(apidoc) docs/title
 docs: docs/build/index.html
 
 pubdocs: docs
-	hg -R ~/src/sjl.bitbucket.org pull -u
-	rsync --delete -a ./docs/build/ ~/src/sjl.bitbucket.org/beast
-	hg -R ~/src/sjl.bitbucket.org commit -Am 'beast: Update site.'
-	hg -R ~/src/sjl.bitbucket.org push
+	hg -R ~/src/docs.stevelosh.com pull -u
+	rsync --delete -a ./docs/build/ ~/src/docs.stevelosh.com/beast
+	hg -R ~/src/docs.stevelosh.com commit -Am 'beast: Update site.'
+	hg -R ~/src/docs.stevelosh.com push
 
 # Testing ---------------------------------------------------------------------
 test: test-sbcl test-ccl test-ecl test-abcl
