@@ -23,7 +23,7 @@ a three-minute description of what this is, or the
 
 * **License:** MIT
 * **Documentation:** <https://docs.stevelosh.com/beast/>
-* **Mercurial:** <https://hg.sr.ht/~sjl/beast/>
+* **Mercurial:** <https://hg.stevelosh.com/beast/>
 * **Git:** <https://github.com/sjl/beast/>
 
 The test suite currently passes in SBCL, CCL, ECL, and ABCL on OS X and Debian.

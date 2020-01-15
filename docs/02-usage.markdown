@@ -213,4 +213,4 @@ and make something, or take a look at the [API Reference](../reference/).
 
 Beast also does some stuff not discussed here like caching entities by
 aspect/system and type-hinting system functions.  If you're curious about how it
-works you can [read the source](https://hg.sr.ht/~sjl/beast/).
+works you can [read the source](https://hg.stevelosh.com/beast/).
