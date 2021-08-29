@@ -12,6 +12,17 @@ don't touch it.
 
 ## Package `BEAST`
 
+### `ALL-ENTITIES` (function)
+
+    (ALL-ENTITIES)
+
+Return a list of all entities.
+
+  Normally you should run code on entities using systems, but this function can
+  be handy for debugging purposes.
+
+  
+
 ### `CLEAR-ENTITIES` (function)
 
     (CLEAR-ENTITIES)

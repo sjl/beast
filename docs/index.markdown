@@ -12,7 +12,7 @@ this is, or the [Usage](./usage/) for a full rundown.
 * **Mercurial:** <https://hg.stevelosh.com/beast/>
 * **Git:** <https://github.com/sjl/beast/>
 
-The test suite currently passes in SBCL, CCL, ECL, and ABCL on OS X and Debian.
+The test suite currently passes in SBCL, CCL, ECL, and ABCL on Ubuntu 20.04.
 Further testing is welcome.
 
 [quicklisp]: https://quicklisp.org/

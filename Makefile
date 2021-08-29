@@ -1,17 +1,12 @@
-.PHONY: pubdocs test-sbcl test-ccl test-ecl test vendor
+.PHONY: pubdocs test-sbcl test-ccl test-ecl test-abcl test
 
+heading_printer = $(shell which heading || echo 'true')
 sourcefiles = $(shell ffind --full-path --literal .lisp)
 docfiles = $(shell ls docs/*.markdown)
 apidoc = docs/03-reference.markdown
 
-# Vendor ----------------------------------------------------------------------
-vendor/quickutils.lisp: vendor/make-quickutils.lisp
-	cd vendor && sbcl --noinform --load make-quickutils.lisp  --eval '(quit)'
-
-vendor: vendor/quickutils.lisp
-
 # Documentation ---------------------------------------------------------------
-$(apidoc): $(sourcefiles) docs/api.lisp package.lisp
+$(apidoc): $(sourcefiles) docs/api.lisp
 	sbcl --noinform --load docs/api.lisp  --eval '(quit)'
 
 docs/build/index.html: $(docfiles) $(apidoc) docs/title
@@ -29,17 +24,17 @@ pubdocs: docs
 test: test-sbcl test-ccl test-ecl test-abcl
 
 test-sbcl:
-	./test/header.sh computer 'SBCL'
-	ros run -L sbcl --load test/test-run.lisp
+	$(heading_printer) computer 'SBCL'
+	time sbcl --load test/run.lisp
 
 test-ccl:
-	./test/header.sh slant 'CCL'
-	ros run -L ccl-bin --load test/test-run.lisp
+	$(heading_printer) slant 'CCL'
+	time ccl --load test/run.lisp
 
 test-ecl:
-	./test/header.sh roman 'ECL'
-	ros run -L ecl --load test/test-run.lisp
+	$(heading_printer) roman 'ECL'
+	time ecl -load test/run.lisp
 
 test-abcl:
-	./test/header.sh broadway 'ABCL'
-	abcl --load test/test-run.lisp
+	$(heading_printer) broadway 'ABCL'
+	time abcl --load test/run.lisp

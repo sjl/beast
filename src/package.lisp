@@ -1,7 +1,5 @@
 (defpackage :beast
-  (:use
-    :cl
-    :beast.quickutils)
+  (:use :cl)
   (:export
     :entity
     :entity-id
@@ -12,6 +10,7 @@
     :destroy-entity
     :clear-entities
     :map-entities
+    :all-entities
 
     :entity-created
     :entity-destroyed

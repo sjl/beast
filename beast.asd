@@ -4,18 +4,27 @@
   :homepage "https://docs.stevelosh.com/beast/"
 
   :license "MIT"
-  :version "1.1.0"
+  :version "1.2.0"
 
   :depends-on ()
 
   :serial t
-  :components ((:module "vendor"
+  :components ((:module "src"
                 :serial t
-                :components ((:file "quickutils-package")
-                             (:file "quickutils")))
-               (:file "package")
-               (:module "src"
-                :serial t
-                :components ((:file "beast"))))
+                :components ((:file "package")
+                             (:file "main"))))
 
-  :in-order-to ((asdf:test-op (asdf:test-op :beast-test))))
+  :in-order-to ((asdf:test-op (asdf:test-op :beast/test))))
+
+
+(asdf:defsystem :beast/test
+  :depends-on (:1am :beast)
+
+  :serial t
+  :components ((:module "test"
+                :serial t
+                :components ((:file "package")
+                             (:file "test"))))
+
+  :perform
+  (asdf:test-op (op system) (uiop:symbol-call :beast/test :run-tests)))
